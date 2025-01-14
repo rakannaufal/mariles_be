@@ -1,0 +1,31 @@
+{
+  "name": "marilesbe",
+  "version": "1.0.0",
+  "description": "Backend for authentication",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node app.js",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web"
+  },
+  "dependencies": {
+    "@react-native-firebase/app": "^21.6.2",
+    "@react-native-firebase/firestore": "^21.6.2",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "expo": "~52.0.23",
+    "expo-status-bar": "~2.0.0",
+    "express": "^4.21.2",
+    "firebase": "^11.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "react": "18.3.1",
+    "react-native": "0.76.5",
+    "react-native-dotenv": "^3.4.11"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.0"
+  },
+  "private": true
+}
