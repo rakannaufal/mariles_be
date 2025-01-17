@@ -23,7 +23,6 @@ const handleLogin = async (req, res) => {
 
   const result = await loginUser(email, password);
   if (result.success) {
-    // Generate token JWT untuk user
     const token = jwt.sign(
       { userId: result.userData._id, email: result.userData.email },
       JWT_SECRET,
@@ -34,8 +33,8 @@ const handleLogin = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      token, // Kirimkan token ke frontend
-      userData: result.userData, // Kirim data pengguna
+      token,
+      userData: result.userData,
     });
   } else {
     return res.status(400).json({ success: false, message: result.message });
@@ -54,19 +53,16 @@ const handleLoginPengajar = async (req, res) => {
 
   const result = await loginPengajar(email, password);
   if (result.success) {
-    // Generate token JWT untuk pengajar
     const token = jwt.sign(
-      { userId: result.userData._id, email: result.userData.email },
+      { pengajarId: result.pengajarData._id, email: result.pengajarData.email },
       JWT_SECRET,
-      {
-        expiresIn: "1h", // Token berlaku selama 1 jam
-      }
+      { expiresIn: "1d" }
     );
 
     return res.status(200).json({
       success: true,
-      token, // Kirimkan token ke frontend
-      username: result.username, // Kirim nama pengajar
+      token,
+      userData: result.pengajarData,
     });
   } else {
     return res.status(400).json({ success: false, message: result.message });
@@ -121,9 +117,53 @@ const handleRegisterPengajar = async (req, res) => {
   }
 };
 
+const getPengajarDataById = async (req, res) => {
+  const { pengajarId } = req.params;
+  const result = await getPengajarData(pengajarId);
+
+  if (result.success) {
+    return res.status(200).json({
+      success: true,
+      pengajarData: result.pengajarData,
+    });
+  } else {
+    return res.status(400).json({
+      success: false,
+      message: result.message,
+    });
+  }
+};
+const getPengajarDetails = async (req, res) => {
+  const { pengajarId } = req.user; // Data dari token JWT
+
+  try {
+    const db = getDatabase();
+    const pengajarRef = ref(db, `pengajar/${pengajarId}`);
+    const snapshot = await get(pengajarRef);
+
+    if (snapshot.exists()) {
+      return res.status(200).json({
+        success: true,
+        data: snapshot.val(),
+      });
+    } else {
+      return res.status(404).json({
+        success: false,
+        message: "Data pengajar tidak ditemukan.",
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Terjadi kesalahan saat mengambil data pengajar.",
+    });
+  }
+};
 module.exports = {
   handleLogin,
   handleRegister,
   handleLoginPengajar,
   handleRegisterPengajar,
+  getPengajarDataById,
+  getPengajarDetails,
 };
