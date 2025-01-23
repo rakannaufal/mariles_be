@@ -5,6 +5,7 @@ const cors = require("cors");
 const authRoutes = require("./src/routes/authRoutes");
 const forumRoutes = require("./src/routes/forumRoutes");
 const contactRoutes = require("./src/routes/contactRoutes");
+const infoLesRoutes = require("./src/routes/infoLesRoutes");
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(bodyParser.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/forum", forumRoutes); // Ensure this line is present
 app.use("/api/contact", contactRoutes); // Ensure this line is present
+app.use("/api/infoles", infoLesRoutes);
 
 // Start the server
 app.listen(5001, () => {

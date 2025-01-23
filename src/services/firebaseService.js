@@ -251,7 +251,29 @@ const saveMessageFromDB = async (user_id, nameText, emailText, messageText) => {
     };
   }
 };
+const saveInfoLes = async (data) => {
+  try {
+    const infoLesRef = ref(db, "informasiles");
+    const newInfoLesPostRef = push(infoLesRef);
+
+    const infoLesData = {
+      ...data,
+      les_id: newInfoLesPostRef.key,
+      created_at: Date.now(),
+    };
+
+    await set(newInfoLesPostRef, infoLesData);
+    return { success: true, message: "Data Informasi Les berhasil disimpan!" };
+  } catch (error) {
+    return {
+      success: false,
+      message: `Gagal menyimpan Data Informasi Les: ${error.message}`,
+    };
+  }
+};
+
 module.exports = {
+  saveInfoLes,
   saveMessageFromDB,
   saveForumQuestion,
   saveForumAnswer,
